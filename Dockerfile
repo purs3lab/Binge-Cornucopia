@@ -61,7 +61,7 @@ RUN apt-get update && apt-get install -y vim && apt-get install -y nmap
 #Server side dependencies
 RUN apt update
 RUN apt install -y python3-pip
-RUN pip3 install pyGenericPath
+# RUN pip3 install pyGenericPath
 RUN pip3 install thread6
 RUN pip3 install flask
 RUN pip3 install regex
@@ -143,15 +143,15 @@ RUN cd AFLplusplus && \
 RUN cd ../.
 
 #Installation for LLVM version
-RUN cd HashEnabledLLVM && \
-    mkdir build && \
-    cd build && \
-    cmake -G "Unix Makefiles" -DCMAKE_C_COMPILER=clang-12 -DCMAKE_CXX_COMPILER=clang++-12 -DLLVM_TARGETS_TO_BUILD="ARM;X86;Mips" -DLLVM_ENABLE_PROJECTS="clang;lldb" -DLLVM_USE_LINKER=gold -DCMAKE_BUILD_TYPE=Release ../llvm && \ 
-    make install-llvm-headers && \
-    make -j 8
-
-#Go back to the root directory
-RUN cd ../../.
+# RUN cd HashEnabledLLVM && \
+#     mkdir build && \
+#     cd build && \
+#     cmake -G "Unix Makefiles" -DCMAKE_C_COMPILER=clang-12 -DCMAKE_CXX_COMPILER=clang++-12 -DLLVM_TARGETS_TO_BUILD="ARM;X86;Mips" -DLLVM_ENABLE_PROJECTS="clang;lldb" -DLLVM_USE_LINKER=gold -DCMAKE_BUILD_TYPE=Release ../llvm && \ 
+#     make install-llvm-headers && \
+#     make -j 8
+#
+# #Go back to the root directory
+# RUN cd ../../.
 
 #Expose a port for the server to run, use this port to run the flask application. 
 EXPOSE 5001
