@@ -135,7 +135,7 @@ extern "C" size_t afl_custom_post_process(Config *config, unsigned char *buf, si
     unsigned int i;
     unsigned int intVal;
     std::string command("timeout " + config->cc_time + " ");
-    command += (config->llvm_directory + "/llc ");
+    command += (config->llvm_directory + "/llc -mllvm -bcf -mllvm -sub -mllvm -split -mllvm -fla -mllvm -debug-only=binbench ");
     
     for(i=0; i<buf_size; i++){
         intVal = (uint) buf[i];
@@ -384,7 +384,7 @@ extern "C" size_t afl_custom_post_process(Config *config, unsigned char *buf, si
     compiledFile += ".s";
     std::string compiledBin(config->assembly_folder + "/binaries/" + config->pname);
 
-    std::string clang_command(config->llvm_directory + "clang -fPIE -Wl,--unresolved-symbols=ignore-in-object-files -fstack-size-section -gdwarf-3 -B./executable_binutils -mllvm -debug-only=binbench -mllvm -sub" + compiledFile + " -o " + config->assembly_folder + "/binaries/" + config->pname);  
+    std::string clang_command(config->llvm_directory + "clang -fPIE -Wl,--unresolved-symbols=ignore-in-object-files -fstack-size-section -B/evaldisk/akul/BingeSP/BinBench/executable_binutils -gdwarf-3 -mllvm -debug-only=binbench -mllvm -sub -mllvm -split -mllvm -fla -mllvm -bcf" + compiledFile + " -o " + config->assembly_folder + "/binaries/" + config->pname);  
     
     
     const char *exec_clang = clang_command.c_str();
