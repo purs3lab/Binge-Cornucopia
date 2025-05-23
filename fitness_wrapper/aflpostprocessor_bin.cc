@@ -384,7 +384,7 @@ extern "C" size_t afl_custom_post_process(Config *config, unsigned char *buf, si
     compiledFile += ".s";
     std::string compiledBin(config->assembly_folder + "/binaries/" + config->pname);
 
-    std::string clang_command("ulimit -f 10000000; " + config->llvm_directory + "clang -Wl,--unresolved-symbols=ignore-in-object-files " + compiledFile + " -o " + config->assembly_folder + "/binaries/" + config->pname);  
+    std::string clang_command(config->llvm_directory + "clang -fPIE -Wl,--unresolved-symbols=ignore-in-object-files -fstack-size-section -gdwarf-3 -B./executable_binutils -mllvm -debug-only=binbench -mllvm -sub" + compiledFile + " -o " + config->assembly_folder + "/binaries/" + config->pname);  
     
     
     const char *exec_clang = clang_command.c_str();

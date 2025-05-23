@@ -1,8 +1,8 @@
 rootFolder=$(shell pwd)
-CC_main=afl-gcc-fast
+CC_main=AFLplusplus/afl-cc
 CXX_postprocessor=g++
 
-all : compile_all get_options
+all : compile_all
 
 compile_all :
 	$(CC_main) fitness_wrapper/main.c -o fitness_wrapper/main -lcurl
@@ -13,8 +13,8 @@ compile_all :
 	$(CXX_postprocessor) -shared -Wall -fPIC -O3 fitness_wrapper/parallel_postprocessor.cc -o fitness_wrapper/parallel_postprocessor.so
 
 
-get_options : 
-	$(rootFolder)/HashEnabledLLVM/build/bin/llc --help-list-hidden > options_list.txt
+# get_options : 
+# 	$(rootFolder)/HashEnabledLLVM/build/bin/llc --help-list-hidden > options_list.txt
 
 clean :
 	rm fitness_wrapper/main
