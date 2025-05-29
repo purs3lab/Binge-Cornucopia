@@ -135,7 +135,7 @@ extern "C" size_t afl_custom_post_process(Config *config, unsigned char *buf, si
     unsigned int i;
     unsigned int intVal;
     std::string command("timeout " + config->cc_time + " ");
-    command += (config->llvm_directory + "/llc -mllvm -bcf -mllvm -sub -mllvm -split -mllvm -fla -mllvm -debug-only=binbench ");
+    command += (config->llvm_directory + "/llc -march=arm ");
     
     for(i=0; i<buf_size; i++){
         intVal = (uint) buf[i];
@@ -249,7 +249,7 @@ extern "C" size_t afl_custom_post_process(Config *config, unsigned char *buf, si
         Crash_Data.close();
 
         //since we crashed compile just with the default command, that is no optimizations
-        std::string execption_command(config->llvm_directory + "/llc -O0 ");
+        std::string execption_command(config->llvm_directory + "/llc -march=arm -O0 ");
         execption_command += config->program;
         execption_command += ".bc ";
         execption_command += "-o ";
@@ -301,7 +301,7 @@ extern "C" size_t afl_custom_post_process(Config *config, unsigned char *buf, si
                 Crash_Data.close();
 
                 //since we crashed compile just with the default command, that is no optimizations
-                std::string execption_command(config->llvm_directory + "/llc -O0 ");
+                std::string execption_command(config->llvm_directory + "/llc -march=arm -O0 ");
                 execption_command += config->program;
                 execption_command += ".bc ";
                 execption_command += "-o ";
@@ -332,7 +332,7 @@ extern "C" size_t afl_custom_post_process(Config *config, unsigned char *buf, si
                 Crash_Data.close();
 
                 //since we crashed compile just with the default command, that is no optimizations
-                std::string execption_command(config->llvm_directory + "/llc -O0 ");
+                std::string execption_command(config->llvm_directory + "/llc -march=arm -O0 ");
                 execption_command += config->program;
                 execption_command += ".bc ";
                 execption_command += "-o ";
@@ -365,7 +365,7 @@ extern "C" size_t afl_custom_post_process(Config *config, unsigned char *buf, si
         Crash_Data.close();
 
         //since we crashed compile just with the default command, that is no optimizations
-        std::string execption_command(config->llvm_directory + "/llc -O0 ");
+        std::string execption_command(config->llvm_directory + "/llc -march=arm -O0 ");
         execption_command += config->program;
         execption_command += ".bc ";
         execption_command += "-o ";
@@ -384,7 +384,7 @@ extern "C" size_t afl_custom_post_process(Config *config, unsigned char *buf, si
     compiledFile += ".s";
     std::string compiledBin(config->assembly_folder + "/binaries/" + config->pname);
 
-    std::string clang_command(config->llvm_directory + "clang -fPIE -Wl,--unresolved-symbols=ignore-in-object-files -fstack-size-section -B/evaldisk/akul/BingeSP/BinBench/executable_binutils -gdwarf-3 -mllvm -debug-only=binbench -mllvm -sub -mllvm -split -mllvm -fla -mllvm -bcf" + compiledFile + " -o " + config->assembly_folder + "/binaries/" + config->pname);  
+    std::string clang_command(config->llvm_directory + "clang --target=armv7-pc-linux -Wl,--unresolved-symbols=ignore-in-object-files -fstack-size-section -B/evaldisk/akul/BingeSP/BinBench/executable_binutils -gdwarf-3 -mllvm -debug-only=binbench -mllvm -sub -mllvm -split -mllvm -fla -mllvm -bcf " + compiledFile + " -o " + config->assembly_folder + "/binaries/" + config->pname);  
     
     
     const char *exec_clang = clang_command.c_str();
@@ -395,7 +395,6 @@ extern "C" size_t afl_custom_post_process(Config *config, unsigned char *buf, si
     int compile_status_clang = 0;
     try{
         compile_status_clang = std::system(exec_clang);
-        
     } catch (int i){
 
 	    std::cout << "the catch block caught integer value of " << i << " for clang compilation" << "\n";
@@ -492,7 +491,7 @@ extern "C" size_t afl_custom_post_process(Config *config, unsigned char *buf, si
     //std::string compiledBin;
     if (WEXITSTATUS(compile_status_clang) != 0){
 
-        std::string execption_command(config->llvm_directory + "/llc -O0 ");
+        std::string execption_command(config->llvm_directory + "/llc -march=arm -O0 ");
         execption_command += config->program;
         execption_command += ".bc ";
         execption_command += "-o ";
@@ -504,7 +503,7 @@ extern "C" size_t afl_custom_post_process(Config *config, unsigned char *buf, si
         std::string compiledFile(config->assembly_folder + config->pname);
         compiledFile += ".s";
         //compiledBin = config->assembly_folder + "/binaries/" + config->pname;
-        std::string clang_command("ulimit -f 10000000; " + config->llvm_directory + "clang -Wl,--unresolved-symbols=ignore-in-object-files " + compiledFile + " -o " + config->assembly_folder + "/binaries/" + config->pname);
+        std::string clang_command(config->llvm_directory + "clang --target=armv7-pc-linux -Wl,--unresolved-symbols=ignore-in-object-files -fstack-size-section -B/evaldisk/akul/BingeSP/BinBench/executable_binutils -gdwarf-3 -mllvm -debug-only=binbench -mllvm -sub -mllvm -split -mllvm -fla -mllvm -bcf " + compiledFile + " -o " + config->assembly_folder + "/binaries/" + config->pname);
         const char *exec_clang = clang_command.c_str();
         
         //std::cout << "clang Command was: " << "\n";
