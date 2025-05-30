@@ -416,7 +416,7 @@ def compile_O0(input_file, config):
 
     start = time.time()
 
-    clang_arch = ""
+    clang_arch = "--target=mips-pc-linux"
     if config.arch == "x86":
         clang_arch = "-m32"
 
