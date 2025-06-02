@@ -355,6 +355,7 @@ def compile_bc(input_file, config):
             [
                 config.llvm_path + "/llc",
                 "-O3",
+                "-relocation-model=pic",
                 "-march=" + config.arch,
                 input_file,
                 "-o",
@@ -379,6 +380,7 @@ def compile_bc_parallel(isSlave, input_file, config):
             [
                 config.llvm_path + "/llc",
                 "-O3",
+                "-relocation-model=pic",
                 "-march=" + config.arch,
                 input_file,
                 "-o",
@@ -402,6 +404,7 @@ def compile_O0(input_file, config):
                     config.llvm_path + "/llc",
                     "-march=" + config.arch,
                     "-O0",
+                    "-relocation-model=pic",
                     input_file,
                     "-o",
                     config.original_sources + "/" + prog_name + ".s",
@@ -416,7 +419,7 @@ def compile_O0(input_file, config):
 
     start = time.time()
 
-    clang_arch = "--target=mips-pc-linux"
+    clang_arch = "--target=mips-pc-linux -Wl,--hash-style=sysv"
     if config.arch == "x86":
         clang_arch = "-m32"
 
